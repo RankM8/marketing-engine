@@ -1,0 +1,14 @@
+{
+  "name": "360webmanager",
+  "owner": {
+    "name": "360WebManager"
+  },
+  "plugins": [
+    {
+      "name": "marketing-engine",
+      "source": "./",
+      "description": "Produkt-Research, Wettbewerbsanalyse und KI-Ad-Creatives mit echter Produkttreue.",
+      "category": "marketing"
+    }
+  ]
+}

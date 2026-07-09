@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+.DS_Store
+
+# Brand-Konfiguration ist kundenspezifisch und gehoert ins Kunden-Repo,
+# nicht ins Plugin. examples/brand.json ist die Vorlage.
+brand.json
+!examples/brand.json

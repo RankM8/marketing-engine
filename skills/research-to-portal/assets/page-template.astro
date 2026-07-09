@@ -1,0 +1,33 @@
+---
+// VORLAGE für eine datengetriebene Portal-Seite (Astro). Kopieren nach
+// src/pages/<sektion>/<slug>.astro, Daten + Inhalte anpassen.
+// Nutzt ausschliesslich Klassen aus src/styles/global.css (über das Layout).
+import Layout from '../../layouts/Layout.astro';
+import { meineDaten as d } from '../../data/meine-daten'; // <- anpassen
+const fmt = (n: number) => new Intl.NumberFormat('de-CH').format(Math.round(n));
+---
+<Layout active="/<sektion>/" title="<Titel>">
+  <div class="crumb"><a href="/<sektion>/"><Sektion></a> › <Titel></div>
+  <div class="eyebrow"><Kicker></div>
+  <h1 class="page disp"><Überschrift></h1>
+  <p class="lede">Ein-Satz-Einordnung mit <b>Kernaussage</b>.</p>
+
+  {/* KPI-Reihe */}
+  <div class="kpis" style="margin-top:26px">
+    <div class="kpi accent"><div class="lbl">Kennzahl</div><div class="val">{fmt(0)}</div><div class="sub">Kontext</div></div>
+  </div>
+
+  {/* Tabelle */}
+  <div class="sec-wrap">
+    <div class="sec-head"><span class="idx">01</span><h2 class="sec disp">Abschnitt</h2></div>
+    <table class="tbl">
+      <thead><tr><th>Spalte</th><th class="num">Wert</th></tr></thead>
+      <tbody>
+        {/* d.items.map(x => <tr><td>{x.name}</td><td class="num">{fmt(x.value)}</td></tr>) */}
+      </tbody>
+    </table>
+  </div>
+
+  {/* Insight-Box */}
+  <div class="insight"><span class="ic">★</span><p><b>Erkenntnis:</b> …</p></div>
+</Layout>

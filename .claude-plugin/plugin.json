@@ -1,0 +1,16 @@
+{
+  "name": "marketing-engine",
+  "version": "0.1.0",
+  "description": "Produkt-Research, Wettbewerbsanalyse und KI-Ad-Creatives mit echter Produkttreue. Von der Marktrecherche bis zum fertigen Meta-Ad.",
+  "author": {
+    "name": "360WebManager"
+  },
+  "keywords": [
+    "marketing",
+    "ads",
+    "research",
+    "creatives",
+    "meta-ads",
+    "competitor-analysis"
+  ]
+}
