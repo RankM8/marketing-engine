@@ -51,6 +51,7 @@ def main():
     ap.add_argument("--theme", default="dark", choices=["dark", "light"],
                     help="dark = heller Text auf dunklem Scrim; light = umgekehrt")
     ap.add_argument("--badge-pos", default="br", choices=["br", "bl"])
+    ap.add_argument("--cta", default="", help="CTA-Pille (dunkel), landet unten auf der Gegenseite der Preis-Pille")
     args = ap.parse_args()
 
     c = colors()
@@ -93,6 +94,16 @@ def main():
             d.text((sx, sy), args.strike, font=sf, fill=text_col)
             mid = sy + (sb[3] - sb[1]) / 2 + sb[1]
             d.line([sx, mid, sx + sw, mid], fill=text_col, width=max(2, W // 500))
+
+    if args.cta:
+        if not args.price:
+            scrim(img, "bottom", 0.30, dark)
+        d = ImageDraw.Draw(img)
+        margin = int(W * 0.06)
+        cf = font(int(W * 0.040), 700)
+        anchor = (W - margin, H - int(H * 0.06), "r") if args.badge_pos == "bl" \
+            else (margin, H - int(H * 0.06), "l")
+        pill(d, anchor, args.cta, cf, ink, paper)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     img.convert("RGB").save(args.output, quality=94)
