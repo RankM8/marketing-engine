@@ -52,6 +52,8 @@ def main():
                     help="dark = heller Text auf dunklem Scrim; light = umgekehrt")
     ap.add_argument("--badge-pos", default="br", choices=["br", "bl"])
     ap.add_argument("--cta", default="", help="CTA-Pille (dunkel), landet unten auf der Gegenseite der Preis-Pille")
+    ap.add_argument("--headline-scale", type=float, default=1.0,
+                    help="Skaliert die Headline-Groesse (z.B. 0.6 fuer lange Zitate/4-Zeiler)")
     args = ap.parse_args()
 
     c = colors()
@@ -66,7 +68,7 @@ def main():
     if args.headline:
         scrim(img, "top", 0.42, dark)
         d = ImageDraw.Draw(img)
-        hl = font(int(W * 0.082), 800)
+        hl = font(int(W * 0.082 * args.headline_scale), 800)
         margin = int(W * 0.06)
         y = draw_lines(d, (margin, int(H * 0.07)), args.headline, hl, text_col)
         if args.sub:
