@@ -8,6 +8,13 @@ description: This skill should be used when the user asks to "create a product a
 Vollstaendige Pipeline fuer Produkt-Ad-Creatives: Szene generieren, Format setzen,
 Marken-Typografie auflegen, Treue pruefen.
 
+> **⚠️ Gateway-Wahl zuerst:** Dieser Skill nutzt **kostenpflichtige** APIs (OpenRouter
+> ~$0.25/Bild, fal). Ist Codex + WhisperM8 verfuegbar (Flat-Plan), ist der Schwester-Skill
+> **`codex-create-creative`** der Standard — kostenlos, mit Zwei-Schritt-Pipeline und
+> Struct-Prompts. Kostenpflichtige Laeufe NUR nach explizitem User-Go starten, nie
+> stillschweigend. Die PIL-Werkzeuge in `scripts/` (overlay_*, composite_logo, reframe,
+> brandkit) sind gateway-neutral und werden von beiden Skills genutzt.
+
 ## Das Wichtigste zuerst: drei Treue-Stufen
 
 Ein Bildmodell **re-rendert** das Produkt. Bei reiner Generierung ist es **nie pixelgenau**.
