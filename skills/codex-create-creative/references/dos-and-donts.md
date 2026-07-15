@@ -181,3 +181,8 @@ doppelt bestaetigte Bilder sind "echt".
 - Muster: Produkt am Boden/in Ablage wird treu nachgebaut, dasselbe Produkt IN DER HAND driftet (klobige glatte Platten, baumelnde Clips) — Haende+Produkt sind die schwerste Synthese-Zone.
 - Fix, der funktionierte: explizite Struct-Regel "THE HELD DUMBBELLS ARE THE IDENTICAL PRODUCT as in reference 2: stack of MANY THIN grooved plates, clips sitting FLUSH (never dangling)... Copy the floor unit fidelity to the held units." PLUS Basis 3-4x generieren und produkttreueste waehlen.
 - Merksatz: Bei Fail-Wiederholung an derselben Stelle nie denselben Prompt nochmal wuerfeln — Fehlklasse benennen und als Regel in den Struct-Block schreiben.
+
+## Schiedsrichter brauchen ANKER, sonst Kalibrierungs-Kollaps (15.07.2026)
+- 4 parallele Review-Agents mit "im Zweifel abwerten" + K.-o.-Formulierung urteilten 169/169 Finals DURCHGEFALLEN — inkl. nachweislich starker Motive. Forensischer Pixelvergleich laesst JEDE generative Neusynthese durchfallen; 100%-Fail hat null Unterscheidungskraft.
+- DO: Review-Briefs IMMER mit (1) 2-3 benannten PASS-Anker-Bildern (kundenfreigegebene Qualitaet), (2) 2 FAIL-Ankern (beanstandete Fehlerklassen), (3) konkretem Fehlerkatalog statt Pauschalformeln, (4) Posen-Referenz-Pflicht fuer Produktanzahl-Urteile, (5) Sanitaets-Check der Verteilung (>60% fail oder >95% pass = Kalibrierung pruefen).
+- Massstab formulieren als Kunden-Massstab ("im Feed erkennbar exakt dieses Produkt"), nie als Pixel-Identitaet.
