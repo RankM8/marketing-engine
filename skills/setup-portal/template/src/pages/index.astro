@@ -15,6 +15,13 @@ for (const r of timeline) {
 <Layout title={meta.titel}>
   <h1 class="page">{meta.titel}</h1>
   <p class="lede">Alle Creatives, chronologisch — neueste zuoberst. Der Ordner wird automatisch indexiert; neue Dateien erscheinen nach dem nächsten Sync. Der Kopier-Button liefert den Dateipfad innerhalb des Creatives-Ordners.</p>
+  {meta.extras?.length > 0 && (
+    <div class="extras">
+      {meta.extras.map((e: { label: string; href: string }) => (
+        <a class="chip xbtn" href={e.href}>{e.label}</a>
+      ))}
+    </div>
+  )}
   <div class="legend">
     <span class="chip"><b>{timeline.length}</b> Bilder</span>
     {meta.quellen.map((q: string) => <button class="chip fbtn" data-q={q}>{q}</button>)}
@@ -87,6 +94,8 @@ for (const r of timeline) {
 </script>
 
 <style>
+  .extras { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 2px; }
+  .xbtn { text-decoration: none; background: #141e24; color: #fff; border-color: #141e24; padding: 8px 16px; font-size: .78rem; }
   .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 6px; position: sticky; top: 8px; z-index: 20; }
   .fbtn { cursor: pointer; }
   .fbtn.on { background: #141e24; color: #fff; border-color: #141e24; }

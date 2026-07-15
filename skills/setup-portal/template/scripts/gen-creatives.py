@@ -75,7 +75,7 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
         "// AUTOGENERIERT von scripts/gen-creatives.py — nicht von Hand editieren\n"
-        f"export const meta = {json.dumps({'titel': cfg.get('titel', 'Creative-Portal'), 'quellen': quellen}, ensure_ascii=False)};\n"
+        f"export const meta = {json.dumps({'titel': cfg.get('titel', 'Creative-Portal'), 'quellen': quellen, 'extras': cfg.get('extras', [])}, ensure_ascii=False)};\n"
         f"export const timeline = {json.dumps(rows, ensure_ascii=False)};\n"
     )
     log(f"{len(rows)} Bilder indexiert aus {src} → {OUT.relative_to(ROOT)}")
