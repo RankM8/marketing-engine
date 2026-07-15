@@ -48,7 +48,8 @@ def main() -> None:
         if not (f.is_file() and f.suffix.lower() in EXT) or f.name.startswith("."):
             continue
         rel = f.relative_to(src)
-        if any(p.startswith(".") or p == "node_modules" for p in rel.parts):
+        excl = set(cfg.get("exclude", []))
+        if any(p.startswith(".") or p == "node_modules" or p in excl for p in rel.parts):
             continue
         flat = "__".join(rel.parts)
         seen.add(flat)
@@ -57,7 +58,7 @@ def main() -> None:
             shutil.copy2(f, dst)
         mtime = manifest.get(f.name, {}).get("generiert", f.stat().st_mtime)
         rows.append({
-            "src": f"/creatives/_gen/{flat}",
+            "src": f"creatives/_gen/{flat}",
             "name": f.name,
             "file": str(rel),
             "quelle": rel.parts[0] if len(rel.parts) > 1 else "Creatives",
