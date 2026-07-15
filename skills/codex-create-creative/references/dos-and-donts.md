@@ -176,3 +176,8 @@ doppelt bestaetigte Bilder sind "echt".
 - Produkt/Person/Szene NIEMALS als Freisteller ausschneiden und einkleben — immer voll generativ: image_gen mit Referenzbildern (Pose + Produkt-Freisteller), Szene komplett NACHBAUEN.
 - Qualitaet kommt aus Referenz-Fuehrung + strukturierten JSON-Prompts + Auslese (harte QA, Regen bei Drift) — nicht aus Compositing.
 - Einzige geduldete Ausnahme: Logo-Fallback per composite_logo.py, wenn die generierte Wortmarke von der Referenz abweicht (Option-B-Sicherheitsnetz, User-abgesegnet).
+
+## Drift bei GEHALTENEN Produkten (15.07.2026, bank-sitzend 3 Anlaeufe)
+- Muster: Produkt am Boden/in Ablage wird treu nachgebaut, dasselbe Produkt IN DER HAND driftet (klobige glatte Platten, baumelnde Clips) — Haende+Produkt sind die schwerste Synthese-Zone.
+- Fix, der funktionierte: explizite Struct-Regel "THE HELD DUMBBELLS ARE THE IDENTICAL PRODUCT as in reference 2: stack of MANY THIN grooved plates, clips sitting FLUSH (never dangling)... Copy the floor unit fidelity to the held units." PLUS Basis 3-4x generieren und produkttreueste waehlen.
+- Merksatz: Bei Fail-Wiederholung an derselben Stelle nie denselben Prompt nochmal wuerfeln — Fehlklasse benennen und als Regel in den Struct-Block schreiben.
