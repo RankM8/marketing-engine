@@ -1,0 +1,28 @@
+---
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <main class="content"><slot /></main>
+</body>
+</html>
+
+<style is:global>
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: 'Schibsted Grotesk', system-ui, sans-serif; background: #f5f3ea; color: #141e24; }
+  .content { max-width: 1400px; margin: 0 auto; padding: 28px 22px 80px; }
+  h1.page { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; margin: 6px 0 4px; }
+  .lede { opacity: .7; max-width: 70ch; line-height: 1.5; margin-bottom: 10px; }
+  .chip { display: inline-block; font-size: .72rem; font-weight: 700; padding: 4px 12px; border-radius: 100px; background: #fff; border: 1px solid rgba(20,30,36,.15); }
+  h2.sec { font-size: 1.15rem; font-weight: 800; margin: 26px 0 12px; }
+</style>

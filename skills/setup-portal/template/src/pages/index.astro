@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { meta, timeline } from '../data/creatives';
+
+const fmtDay = (ts: number) => new Date(ts * 1000).toLocaleDateString('de-CH', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+const fmtTime = (ts: number) => new Date(ts * 1000).toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit' }) + ' · ' + new Date(ts * 1000).toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+
+const days: { day: string; items: (typeof timeline)[number][] }[] = [];
+for (const r of timeline) {
+  const d = fmtDay(r.mtime);
+  if (!days.length || days[days.length - 1].day !== d) days.push({ day: d, items: [] });
+  days[days.length - 1].items.push(r);
+}
+---
+<Layout title={meta.titel}>
+  <h1 class="page">{meta.titel}</h1>
+  <p class="lede">Alle Creatives, chronologisch — neueste zuoberst. Der Ordner wird automatisch indexiert; neue Dateien erscheinen nach dem nächsten Sync. Der Kopier-Button liefert den Dateipfad innerhalb des Creatives-Ordners.</p>
+  <div class="legend">
+    <span class="chip"><b>{timeline.length}</b> Bilder</span>
+    {meta.quellen.map((q: string) => <button class="chip fbtn" data-q={q}>{q}</button>)}
+    <button class="chip fbtn on" data-q="">Alle</button>
+  </div>
+
+  {days.map((g) => (
+    <div class="sec-wrap">
+      <h2 class="sec">{g.day} <span class="cnt">{g.items.length}×</span></h2>
+      <div class="tl-grid">
+        {g.items.map((r) => (
+          <div class="tl-card" data-quelle={r.quelle}>
+            <button class="lb-trigger tl-imgbtn" data-src={r.src} aria-label="Vergrössern">
+              <img src={r.src} alt={r.name} loading="lazy" />
+            </button>
+            <div class="tl-meta">
+              <span class="tl-time">{fmtTime(r.mtime)}</span>
+              <span class="tl-name">{r.name}</span>
+              <span class="chip sm">{r.quelle}</span>
+              <button class="copybtn" data-file={r.file} title="Dateipfad kopieren">⧉ Pfad kopieren</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  <div class="lb" id="lb" aria-hidden="true">
+    <button class="lb-close" id="lbClose">&times;</button>
+    <button class="lb-nav lb-prev" id="lbPrev">&#8249;</button>
+    <img class="lb-img" id="lbImg" src="" alt="gross" />
+    <button class="lb-nav lb-next" id="lbNext">&#8250;</button>
+  </div>
+</Layout>
+
+<script is:inline>
+  (function () {
+    const lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
+    const trg = Array.from(document.querySelectorAll('.lb-trigger')); const src = trg.map((t) => t.dataset.src); let i = 0;
+    const open = (n) => { i = (n + src.length) % src.length; lbImg.src = src[i]; lb.classList.add('open'); };
+    const close = () => lb.classList.remove('open');
+    trg.forEach((t, n) => t.addEventListener('click', () => open(n)));
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbNext').addEventListener('click', (e) => { e.stopPropagation(); open(i + 1); });
+    document.getElementById('lbPrev').addEventListener('click', (e) => { e.stopPropagation(); open(i - 1); });
+    lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+    document.addEventListener('keydown', (e) => { if (!lb.classList.contains('open')) return; if (e.key === 'Escape') close(); if (e.key === 'ArrowRight') open(i + 1); if (e.key === 'ArrowLeft') open(i - 1); });
+
+    const fb = Array.from(document.querySelectorAll('.fbtn'));
+    fb.forEach((b) => b.addEventListener('click', () => {
+      fb.forEach((x) => x.classList.remove('on')); b.classList.add('on');
+      const v = b.dataset.q;
+      document.querySelectorAll('.tl-card').forEach((c) => { c.style.display = (!v || c.dataset.quelle === v) ? '' : 'none'; });
+      document.querySelectorAll('.sec-wrap').forEach((s) => {
+        const any = Array.from(s.querySelectorAll('.tl-card')).some((c) => c.style.display !== 'none');
+        s.style.display = any ? '' : 'none';
+      });
+    }));
+
+    document.querySelectorAll('.copybtn').forEach((b) => {
+      b.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(b.dataset.file);
+          const old = b.textContent; b.textContent = '✓ kopiert'; b.classList.add('ok');
+          setTimeout(() => { b.textContent = old; b.classList.remove('ok'); }, 1200);
+        } catch { b.textContent = '✕ Fehler'; }
+      });
+    });
+  })();
+</script>
+
+<style>
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 6px; position: sticky; top: 8px; z-index: 20; }
+  .fbtn { cursor: pointer; }
+  .fbtn.on { background: #141e24; color: #fff; border-color: #141e24; }
+  .cnt { font-size: .8rem; opacity: .5; font-weight: 600; }
+  .tl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+  .tl-card { border: 1px solid rgba(20,30,36,.12); border-radius: 10px; overflow: hidden; background: #fff; }
+  .tl-imgbtn { display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in; background: #f2f1ec; }
+  .tl-imgbtn img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; }
+  .tl-meta { padding: 8px 10px 10px; display: grid; gap: 5px; justify-items: start; }
+  .tl-time { font-size: .72rem; opacity: .55; }
+  .tl-name { font-size: .76rem; font-weight: 600; word-break: break-all; line-height: 1.25; }
+  .chip.sm { font-size: .66rem; padding: 2px 8px; }
+  .copybtn { font-size: .68rem; font-weight: 700; padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(20,30,36,.2); background: #fff; cursor: pointer; }
+  .copybtn.ok { background: #ffed00; border-color: #ffed00; }
+  .lb { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(10,14,16,.92); z-index: 100; }
+  .lb.open { display: flex; }
+  .lb-img { max-width: 90vw; max-height: 86vh; border-radius: 12px; object-fit: contain; }
+  .lb-close { position: absolute; top: 18px; right: 22px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; font-size: 1.6rem; cursor: pointer; }
+  .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: #fff; font-size: 2rem; cursor: pointer; }
+  .lb-prev { left: 18px; } .lb-next { right: 18px; }
+</style>

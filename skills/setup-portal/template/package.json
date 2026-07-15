@@ -1,0 +1,16 @@
+{
+  "name": "creative-portal",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lokales Creative-Portal — zeigt alle Creatives aus einem (Drive-)Ordner als Timeline",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "index": "python3 scripts/gen-creatives.py",
+    "start": "python3 scripts/gen-creatives.py && astro dev",
+    "watch": "sh scripts/watch-creatives.sh"
+  },
+  "dependencies": { "astro": "^5.1.0" },
+  "devDependencies": { "typescript": "^5.7.0" }
+}
