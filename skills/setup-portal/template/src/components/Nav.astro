@@ -1,0 +1,20 @@
+---
+import { meta, landingpages } from '../data/creatives';
+interface Props { active: 'creatives' | 'landingpages' }
+const { active } = Astro.props;
+const hrefCreatives = active === 'creatives' ? './' : '../';
+const hrefLp = active === 'landingpages' ? './' : 'landingpages/';
+---
+{landingpages.length > 0 && (
+  <nav class="tabs">
+    <a class={active === 'creatives' ? 'tab on' : 'tab'} href={hrefCreatives}>Creatives</a>
+    <a class={active === 'landingpages' ? 'tab on' : 'tab'} href={hrefLp}>Landing Pages</a>
+  </nav>
+)}
+
+<style>
+  .tabs { display: flex; gap: 6px; margin: 0 0 18px; border-bottom: 2px solid rgba(20,30,36,.12); }
+  .tab { text-decoration: none; color: #141e24; font-weight: 700; font-size: .9rem; padding: 10px 18px; border-radius: 10px 10px 0 0; opacity: .6; }
+  .tab.on { background: #141e24; color: #fff; opacity: 1; }
+  .tab:not(.on):hover { opacity: 1; background: rgba(20,30,36,.06); }
+</style>

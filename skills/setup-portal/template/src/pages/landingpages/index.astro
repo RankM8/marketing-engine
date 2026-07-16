@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import { meta, landingpages } from '../../data/creatives';
+
+const gruppen: { name: string; items: (typeof landingpages)[number][] }[] = [];
+for (const lp of landingpages) {
+  let g = gruppen.find((x) => x.name === lp.gruppe);
+  if (!g) { g = { name: lp.gruppe, items: [] }; gruppen.push(g); }
+  g.items.push(lp);
+}
+---
+<Layout title={`Landing Pages · ${meta.titel}`}>
+  <Nav active="landingpages" />
+  <h1 class="page">Landing Pages</h1>
+  <p class="lede">Jede Variante lässt sich direkt ansehen (öffnet in neuem Tab) oder als HTML herunterladen. Für den Einbau in den Shop das Komplett-Paket nehmen — es enthält alle Varianten samt Bildern und Assets.</p>
+  {meta.zip && <a class="chip zipbtn" href={`../${meta.zip}`} download>⬇️ Komplett-Paket herunterladen (alle Varianten + Assets, ZIP)</a>}
+
+  {gruppen.map((g) => (
+    <div class="lp-sec">
+      <h2 class="sec">{g.name === 'Hauptvarianten' ? 'Hauptvarianten' : `Weitere Designs (${g.name})`}</h2>
+      <div class="lp-grid">
+        {g.items.map((lp) => (
+          <div class="lp-card">
+            <a class="lp-preview" href={`../${lp.href}`} target="_blank" rel="noopener" title="In neuem Tab ansehen">
+              <iframe src={`../${lp.href}`} loading="lazy" tabindex="-1" scrolling="no"></iframe>
+              <span class="lp-overlay">Ansehen ↗</span>
+            </a>
+            <div class="lp-meta">
+              <span class="lp-name">{lp.name}</span>
+              <div class="lp-actions">
+                <a class="chip abtn" href={`../${lp.href}`} target="_blank" rel="noopener">Ansehen</a>
+                <a class="chip abtn" href={`../${lp.href}`} download>HTML herunterladen</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</Layout>
+
+<style>
+  .zipbtn { display: inline-block; text-decoration: none; background: #ffed00; border-color: #ffed00; font-weight: 800; padding: 10px 18px; margin: 4px 0 10px; }
+  .lp-sec { margin-top: 10px; }
+  .lp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .lp-card { border: 1px solid rgba(20,30,36,.12); border-radius: 12px; overflow: hidden; background: #fff; }
+  .lp-preview { display: block; position: relative; height: 240px; overflow: hidden; background: #f2f1ec; }
+  .lp-preview iframe { width: 400%; height: 400%; transform: scale(.25); transform-origin: 0 0; border: 0; pointer-events: none; }
+  .lp-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(20,30,36,0); color: transparent; font-weight: 800; transition: all .15s; }
+  .lp-preview:hover .lp-overlay { background: rgba(20,30,36,.55); color: #fff; }
+  .lp-meta { padding: 12px 14px 14px; display: grid; gap: 8px; }
+  .lp-name { font-weight: 700; font-size: .92rem; }
+  .lp-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+  .abtn { text-decoration: none; cursor: pointer; }
+  .abtn:hover { background: #141e24; color: #fff; }
+</style>

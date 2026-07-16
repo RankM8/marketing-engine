@@ -70,13 +70,27 @@ def main() -> None:
         if g.is_file() and g.name not in seen:
             g.unlink()
 
+    # Landingpages: HTML-Dateien im konfigurierten public-Unterordner (+1 Ebene tief)
+    lps = []
+    lp_cfg = cfg.get("landingpages") or {}
+    if lp_cfg.get("dir"):
+        lp_dir = ROOT / "public" / lp_cfg["dir"]
+        if lp_dir.is_dir():
+            for h in sorted(list(lp_dir.glob("*.html")) + list(lp_dir.glob("*/*.html"))):
+                rel = h.relative_to(ROOT / "public")
+                name = h.stem.replace("-", " ").replace("_", " ").strip().title()
+                if h.stem == "index":
+                    name = ("Übersicht" if h.parent == lp_dir else h.parent.name.replace("-", " ").title() + " — Übersicht")
+                lps.append({"name": name, "href": str(rel), "gruppe": ("Hauptvarianten" if h.parent == lp_dir else h.parent.name)})
+
     rows.sort(key=lambda r: -r["mtime"])
     quellen = sorted({r["quelle"] for r in rows})
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
         "// AUTOGENERIERT von scripts/gen-creatives.py — nicht von Hand editieren\n"
-        f"export const meta = {json.dumps({'titel': cfg.get('titel', 'Creative-Portal'), 'quellen': quellen, 'extras': cfg.get('extras', [])}, ensure_ascii=False)};\n"
+        f"export const meta = {json.dumps({'titel': cfg.get('titel', 'Creative-Portal'), 'quellen': quellen, 'extras': cfg.get('extras', []), 'zip': (cfg.get('landingpages') or {}).get('zip')}, ensure_ascii=False)};\n"
         f"export const timeline = {json.dumps(rows, ensure_ascii=False)};\n"
+        f"export const landingpages = {json.dumps(lps, ensure_ascii=False)};\n"
     )
     log(f"{len(rows)} Bilder indexiert aus {src} → {OUT.relative_to(ROOT)}")
 
