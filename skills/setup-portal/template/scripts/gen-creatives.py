@@ -84,7 +84,7 @@ def main() -> None:
                 gkey = "Hauptvarianten" if h.parent == lp_dir else str(h.parent.relative_to(lp_dir))
                 gruppe = (lp_cfg.get("gruppen") or {}).get(gkey, gkey)
                 lps.append({"name": name, "href": str(rel), "gruppe": gruppe})
-            lps.sort(key=lambda l: (l["gruppe"] != "Hauptvarianten", l["gruppe"], l["name"]))
+            lps.sort(key=lambda l: (l["gruppe"] != "Hauptvarianten", len(l["href"].split("/")), l["gruppe"], l["name"]))
 
     rows.sort(key=lambda r: -r["mtime"])
     quellen = sorted({r["quelle"] for r in rows})
