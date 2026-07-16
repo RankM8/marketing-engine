@@ -76,12 +76,14 @@ def main() -> None:
     if lp_cfg.get("dir"):
         lp_dir = ROOT / "public" / lp_cfg["dir"]
         if lp_dir.is_dir():
-            for h in sorted(list(lp_dir.glob("*.html")) + list(lp_dir.glob("*/*.html"))):
+            for h in sorted(list(lp_dir.glob("*.html")) + list(lp_dir.glob("*/*.html")) + list(lp_dir.glob("*/*/*.html"))):
                 rel = h.relative_to(ROOT / "public")
                 name = (lp_cfg.get("namen") or {}).get(str(rel_name := h.name)) or h.stem.replace("-", " ").replace("_", " ").strip().title()
                 if h.stem == "index":
                     name = ("Übersicht" if h.parent == lp_dir else h.parent.name.replace("-", " ").title() + " — Übersicht")
-                lps.append({"name": name, "href": str(rel), "gruppe": ("Hauptvarianten" if h.parent == lp_dir else h.parent.name)})
+                gkey = "Hauptvarianten" if h.parent == lp_dir else str(h.parent.relative_to(lp_dir))
+                gruppe = (lp_cfg.get("gruppen") or {}).get(gkey, gkey)
+                lps.append({"name": name, "href": str(rel), "gruppe": gruppe})
             lps.sort(key=lambda l: (l["gruppe"] != "Hauptvarianten", l["gruppe"], l["name"]))
 
     rows.sort(key=lambda r: -r["mtime"])
