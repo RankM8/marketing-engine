@@ -63,9 +63,19 @@ erfundenen Preise, keine Extra-Produkte, exakte Copy. Feld-Spezifikation und Bei
 `references/struct-prompt-format.md`. Konvertierung: `scripts/make_struct_prompt.py`.
 
 **Kein Cut-out-Compositing:** Produkt/Person niemals als Freisteller einkleben — immer voll
-generativ nachbauen (User-Direktive). Einzige Ausnahme: Logo-Fallback per
-`create-product-image/scripts/composite_logo.py`, wenn die generierte Wortmarke von der
-Referenz abweicht.
+generativ nachbauen (User-Direktive). Ausnahme ist ausschliesslich das Marken-Logo (s. u.).
+
+## Brand-Guidelines-Pflicht (seit 2026-07-16)
+
+Vor jeder Produktion Brand-Quelle laden (`BRAND.md` → `brand.json` → Manual-PDF → User
+fragen) und in die Struct-Prompts einbrennen: exakte Farb-Hexwerte, `brand_font` im
+Charakter der Marken-Schrift. **Das Logo wird NICHT mehr mitgeneriert:** Im Design-Struct
+kein `logo`-Element, stattdessen `canvas.reserved_logo_zone` (untere 13 % frei; Hochformat:
+obere 13 %) — nach dem QA-Pass setzt `scripts/brand_logo_overlay.py` das echte Vektor-Logo
+Manual-konform (Foto: Grau-Box oder 15%-Stripe; Feed unten, Story/Banner oben). Details,
+Placement-Matrix und Farb-Fallen: `references/brand-guidelines.md`.
+Alt-Fallback für Bestandsmotive mit generierter Wortmarke:
+`create-product-image/scripts/composite_logo.py`.
 
 ## QA-Vertrag (jedes Final, jedes Kriterium einzeln PASS/FAIL)
 
@@ -75,9 +85,13 @@ Referenz abweicht.
    Ablagen, im Zweifel weniger.
 2. Copy ZEICHENGENAU gegen das Konzept-JSON inkl. Umbrüchen und Umlauten (ä/ö/ü — nie
    ae/oe/ue), genau EIN %-Zeichen, genau EIN Streichpreis, nie Preise erfinden.
-3. Logo: Buchstabenformen gegen die Wortmarken-Referenz; bei Abweichung Fallback composite_logo.
+3. Logo: KEIN generiertes Logo/Wortmarke im Bild; reservierte Logo-Zone (13 %) frei.
+   (Bestandsmotive mit generierter Wortmarke: Buchstabenformen gegen Referenz, sonst
+   Fallback composite_logo.)
 4. Format exakt quadratisch (bzw. Sollformat), 5 % Safe-Margin: nichts angeschnitten.
 5. Anatomie (Hände/Finger), kein Composite-Look, Text verdeckt weder Gesicht noch Produkt.
+6. Brand-Checks bei Brand-Pflicht: Marken-Gelb rein (kein Senf-Drift), Typo-Charakter
+   gemäss `brand_font` — siehe `references/brand-guidelines.md`.
 
 ## Doppel-Review (Pflicht)
 

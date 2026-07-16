@@ -186,3 +186,14 @@ doppelt bestaetigte Bilder sind "echt".
 - 4 parallele Review-Agents mit "im Zweifel abwerten" + K.-o.-Formulierung urteilten 169/169 Finals DURCHGEFALLEN — inkl. nachweislich starker Motive. Forensischer Pixelvergleich laesst JEDE generative Neusynthese durchfallen; 100%-Fail hat null Unterscheidungskraft.
 - DO: Review-Briefs IMMER mit (1) 2-3 benannten PASS-Anker-Bildern (kundenfreigegebene Qualitaet), (2) 2 FAIL-Ankern (beanstandete Fehlerklassen), (3) konkretem Fehlerkatalog statt Pauschalformeln, (4) Posen-Referenz-Pflicht fuer Produktanzahl-Urteile, (5) Sanitaets-Check der Verteilung (>60% fail oder >95% pass = Kalibrierung pruefen).
 - Massstab formulieren als Kunden-Massstab ("im Feed erkennbar exakt dieses Produkt"), nie als Pixel-Identitaet.
+
+## Brand-Manuals sind Gesetz (2026-07-16, Fitagon)
+- Kunden-Brand-Manuals definieren harte Logo-Placement-Regeln (Poster unten / Banner OBEN /
+  im Foto nie nackt) — ein kompletter Bestand wurde deswegen kundenseitig moniert.
+  VOR Produktion Brand-Quelle laden und einbrennen: `references/brand-guidelines.md`.
+- Logo nie mehr mitgenerieren: `reserved_logo_zone` (13 %) + `scripts/brand_logo_overlay.py`
+  (Grau-Box / 15%-Stripe, Feed unten, Story oben). Generierte Wortmarken sind IMMER leicht ab.
+- Manual-Farben vs. Live-Website koennen abweichen (Fitagon: #FFE500/#465359 vs.
+  #FFED00/#374F5A) — Diskrepanz melden, Entscheid einholen, nie stillschweigend mischen.
+- Design-Pass-Regen auf bestehende Basis funktioniert gut fuer Brand-Nachzuege
+  (7/7 Motive, Basis unveraendert, nur Typo/Farben/Logo-Zone neu).
