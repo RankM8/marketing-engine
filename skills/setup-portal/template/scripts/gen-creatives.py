@@ -78,7 +78,7 @@ def main() -> None:
         if lp_dir.is_dir():
             for h in sorted(list(lp_dir.glob("*.html")) + list(lp_dir.glob("*/*.html"))):
                 rel = h.relative_to(ROOT / "public")
-                name = h.stem.replace("-", " ").replace("_", " ").strip().title()
+                name = (lp_cfg.get("namen") or {}).get(str(rel_name := h.name)) or h.stem.replace("-", " ").replace("_", " ").strip().title()
                 if h.stem == "index":
                     name = ("Übersicht" if h.parent == lp_dir else h.parent.name.replace("-", " ").title() + " — Übersicht")
                 lps.append({"name": name, "href": str(rel), "gruppe": ("Hauptvarianten" if h.parent == lp_dir else h.parent.name)})
