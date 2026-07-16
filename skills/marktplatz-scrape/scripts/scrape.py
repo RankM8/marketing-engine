@@ -5,15 +5,22 @@ Robuster Weg für JS-/GraphQL-geschützte CH-Marktplätze (z. B. Galaxus): nutzt
 apify/rag-web-browser mit Browser-Rendering (umgeht Schutz, der dedizierte
 GraphQL-Actors bricht) und parst das gerenderte Markdown zu strukturierten Produkten.
 
-Aufruf:
-  APIFY_TOKEN=... python3 scrape.py --url "<marktplatz-such-url>" --out out.json \
-      [--source galaxus] [--max 50] [--wait 8]
+Aufruf (mit dem auf dem System verfuegbaren Python-Launcher):
+  python3 scrape.py --url "<marktplatz-such-url>" --out out.json
+  py scrape.py --url "<marktplatz-such-url>" --out out.json
 
 Quelle der URL: die normale Such-/Kategorie-URL im Browser (z. B.
   https://www.galaxus.ch/de/search?q=verstellbare%20hantel ).
 """
 from __future__ import annotations
-import argparse, json, os, re, sys, urllib.request
+
+import argparse
+import json
+import os
+from pathlib import Path
+import re
+import sys
+import urllib.request
 
 APIFY = "https://api.apify.com/v2/acts/apify~rag-web-browser/run-sync-get-dataset-items"
 
@@ -24,7 +31,7 @@ def fetch_markdown(url: str, token: str, wait: int) -> str:
         "scrapingTool": "browser-playwright",
         "outputFormats": ["markdown"],
         "dynamicContentWaitSecs": wait,
-    }).encode()
+    }).encode("utf-8")
     req = urllib.request.Request(f"{APIFY}?token={token}", data=body,
                                  headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=300) as r:
@@ -67,21 +74,27 @@ def main() -> int:
     if not token:
         sys.exit("ERROR: APIFY_TOKEN nicht gesetzt (env).")
 
-    print(f"[marktplatz-scrape] rag-web-browser → {args.url}", flush=True)
+    print(f"[marktplatz-scrape] rag-web-browser: {args.url}", flush=True)
     md = fetch_markdown(args.url, token, args.wait)
     if args.save_markdown:
-        open(args.save_markdown, "w").write(md)
+        markdown_path = Path(args.save_markdown)
+        markdown_path.parent.mkdir(parents=True, exist_ok=True)
+        markdown_path.write_text(md, encoding="utf-8")
     products = PARSERS[args.source](md)[: args.max]
     if not products:
-        sys.exit("Keine Produkte geparst — URL prüfen oder --wait erhöhen. "
+        sys.exit("Keine Produkte geparst - URL pruefen oder --wait erhoehen. "
                  "(Markdown via --save-markdown inspizieren.)")
     data = {"source": args.source, "url": args.url, "count": len(products),
             "method": "apify/rag-web-browser (browser-playwright)", "products": products}
-    json.dump(data, open(args.out, "w"), ensure_ascii=False, indent=2)
+    output_path = Path(args.out)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8", newline="\n") as output_file:
+        json.dump(data, output_file, ensure_ascii=False, indent=2)
+        output_file.write("\n")
     prices = [p["priceChf"] for p in products if p["priceChf"]]
-    print(f"[marktplatz-scrape] {len(products)} Produkte → {args.out}")
+    print(f"[marktplatz-scrape] {len(products)} Produkte -> {output_path}")
     if prices:
-        print(f"  Preisspanne CHF {min(prices):.0f}–{max(prices):.0f}")
+        print(f"  Preisspanne CHF {min(prices):.0f}-{max(prices):.0f}")
     return 0
 
 if __name__ == "__main__":
