@@ -82,6 +82,7 @@ def main() -> None:
                 if h.stem == "index":
                     name = ("Übersicht" if h.parent == lp_dir else h.parent.name.replace("-", " ").title() + " — Übersicht")
                 lps.append({"name": name, "href": str(rel), "gruppe": ("Hauptvarianten" if h.parent == lp_dir else h.parent.name)})
+            lps.sort(key=lambda l: (l["gruppe"] != "Hauptvarianten", l["gruppe"], l["name"]))
 
     rows.sort(key=lambda r: -r["mtime"])
     quellen = sorted({r["quelle"] for r in rows})
