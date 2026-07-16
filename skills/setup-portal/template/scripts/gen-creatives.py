@@ -89,7 +89,7 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
         "// AUTOGENERIERT von scripts/gen-creatives.py — nicht von Hand editieren\n"
-        f"export const meta = {json.dumps({'titel': cfg.get('titel', 'Creative-Portal'), 'quellen': quellen, 'extras': cfg.get('extras', []), 'zip': (cfg.get('landingpages') or {}).get('zip')}, ensure_ascii=False)};\n"
+        f"export const meta = {json.dumps({'titel': cfg.get('titel', 'Creative-Portal'), 'quellen': quellen, 'extras': cfg.get('extras', []), 'zip': (cfg.get('landingpages') or {}).get('zip'), 'copyBtn': cfg.get('pfad_kopieren', True)}, ensure_ascii=False)};\n"
         f"export const timeline = {json.dumps(rows, ensure_ascii=False)};\n"
         f"export const landingpages = {json.dumps(lps, ensure_ascii=False)};\n"
     )

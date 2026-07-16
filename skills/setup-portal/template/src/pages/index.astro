@@ -16,7 +16,7 @@ for (const r of timeline) {
 <Layout title={meta.titel}>
   <Nav active="creatives" />
   <h1 class="page">{meta.titel}</h1>
-  <p class="lede">Alle Creatives, chronologisch — neueste zuoberst. Der Ordner wird automatisch indexiert; neue Dateien erscheinen nach dem nächsten Sync. Der Kopier-Button liefert den Dateipfad innerhalb des Creatives-Ordners.</p>
+  <p class="lede">Alle Creatives, chronologisch — neueste zuoberst. Der Ordner wird automatisch indexiert; neue Dateien erscheinen nach dem nächsten Sync. Klick auf ein Bild öffnet die Grossansicht.</p>
   {meta.extras?.length > 0 && (
     <div class="extras">
       {meta.extras.map((e: { label: string; href: string }) => (
@@ -43,7 +43,7 @@ for (const r of timeline) {
               <span class="tl-time">{fmtTime(r.mtime)}</span>
               <span class="tl-name">{r.name}</span>
               <span class="chip sm">{r.quelle}</span>
-              <button class="copybtn" data-file={r.file} title="Dateipfad kopieren">⧉ Pfad kopieren</button>
+              {meta.copyBtn && <button class="copybtn" data-file={r.file} title="Dateipfad kopieren">⧉ Pfad kopieren</button>}
             </div>
           </div>
         ))}
